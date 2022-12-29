@@ -205,7 +205,7 @@ public class Map : MonoBehaviour
 
         MapTemplate randomMap = mapGenerator.GenerateRandomMap();
 
-        Debug.Log("Map Seed: " + randomMap.GetMapSeed());
+        //Debug.Log("Map Seed: " + randomMap.GetMapSeed());
         return randomMap;
     }
 

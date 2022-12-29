@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1099,7 +1099,7 @@ PrefabInstance:
     - target: {fileID: 2357752997481302938, guid: 13a5a1874156828438869c34396bbf28,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2357752997481302939, guid: 13a5a1874156828438869c34396bbf28,
         type: 3}
@@ -1771,7 +1771,7 @@ PrefabInstance:
     - target: {fileID: 2357752997481302939, guid: 13a5a1874156828438869c34396bbf28,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 184
+      value: 115
       objectReference: {fileID: 0}
     - target: {fileID: 2357752997481302939, guid: 13a5a1874156828438869c34396bbf28,
         type: 3}
@@ -5741,7 +5741,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 3.06
-  m_Text: Tower Defense
+  m_Text: "\uD0C0\uC6CC \uB514\uD32C\uC2A4"
 --- !u!222 &982341303
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9073,7 +9073,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 3.06
-  m_Text: '"hello My Game"'
+  m_Text: 
 --- !u!222 &1703261313
 CanvasRenderer:
   m_ObjectHideFlags: 0

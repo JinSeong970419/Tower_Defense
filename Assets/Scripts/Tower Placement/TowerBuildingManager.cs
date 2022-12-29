@@ -112,7 +112,10 @@ public class TowerBuildingManager : MonoBehaviour
                 }
             }
         }
-        else { Debug.Log(Time.timeScale); }
+        else
+        { 
+            //Debug.Log(Time.timeScale); 
+        }
     }
 
     public void UpgradeFromBase(int type)

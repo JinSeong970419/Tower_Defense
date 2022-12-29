@@ -24,7 +24,7 @@ class OddsTable
     public string Roll() { return getResultKey(Random.Range(0.0f * 1000F, mOddsTotal * 1000F) / 1000F); }
     public string GetForNormalizedRoll(float dec)
     {
-        Debug.Log(dec * mOddsTotal);
+        //Debug.Log(dec * mOddsTotal);
         return getResultKey(dec * mOddsTotal);
     }
 

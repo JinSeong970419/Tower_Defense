@@ -46,7 +46,7 @@ public class TinyMoveScript : MonoBehaviour
                 newPos += new Vector3(0f, 0f, oscillate);
                 break;
             default:
-                Debug.Log("Call from switch direction");
+                //Debug.Log("Call from switch direction");
                 break;
         }
         transform.position = newPos;

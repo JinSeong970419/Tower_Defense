@@ -182,7 +182,7 @@ public class MapGenerator
                         moveDirection = possibleDirections[BetterRandomRange(0, possibleDirections.Count - 1)];
                     else
                     {
-                        Debug.Log("나갈 가능성 없음");
+                        //Debug.Log("나갈 가능성 없음");
                         break;
                     }
                 }

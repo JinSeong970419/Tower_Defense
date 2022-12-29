@@ -117,7 +117,7 @@ public class EnemySpawnerController : MonoBehaviour
 
     public void ResetWave()
     {
-        Debug.Log("ResetWave");
+        //Debug.Log("ResetWave");
         CleanUpEnemyList();
         for (int i = 0; i < spawnedEnemies.Count; i++)
         {

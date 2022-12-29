@@ -17,7 +17,7 @@ public class Waypoints : MonoBehaviour
 
     public void CreateWaypoints()
     {
-        Debug.Log("waypoint Creating");
+        //Debug.Log("waypoint Creating");
 
         MapV2 map = gameObject.GetComponentInParent<MapV2>();
         List<PathSegment> pathSegments = map.GetPathSegments();

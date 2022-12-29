@@ -4,7 +4,7 @@ using TMPro;
 
 public class Wallet : MonoBehaviour
 {
-    const int startingGold = 100;
+    const int startingGold = 10000;
 
     [SerializeField] const float baseInterestRate = 0.05f;
 

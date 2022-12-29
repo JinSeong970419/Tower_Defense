@@ -143,7 +143,7 @@ public class MapV2 : MonoBehaviour
 
     void StartMap()
     {
-        Debug.Log("START MAP");
+        //Debug.Log("START MAP");
         if (m_useRandomMap)
             m_mapSeed = Random.Range(0, System.Int32.MaxValue);
 
@@ -311,7 +311,7 @@ public class MapV2 : MonoBehaviour
      */
     public void ApplyTemplateToMap(MapTemplate mapTemplate)
     {
-        Debug.Log("ApplyTemplateToMap");
+        //Debug.Log("ApplyTemplateToMap");
         // Initialize perlin noise generator to make terrain
         m_envPerlinNoise = new PerlinNoise2D(GetMapRowCount(), GetMapColCount());
 
@@ -916,7 +916,7 @@ public class MapV2 : MonoBehaviour
 
                 m_mapSeed = result;
                 ResetMap();
-                Debug.Log("ResetMap");
+                //Debug.Log("ResetMap");
                 m_waypoints.ResetWaypoints();
                 StartMap();
             }
@@ -931,7 +931,7 @@ public class MapV2 : MonoBehaviour
 
     public void GenerateMapFromSeed(int seed)
     {
-        Debug.Log("GenerateMapFromSeed");
+        //Debug.Log("GenerateMapFromSeed");
         m_useRandomMap = false;
         m_mapSeed = seed;
         StartMap();

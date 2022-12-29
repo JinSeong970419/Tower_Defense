@@ -43,12 +43,12 @@ public class MainMenuManagement : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("NO MAP");
+                    //Debug.Log("NO MAP");
                 }
             }
             else
             {
-                Debug.Log("NO MAP OBJECT");
+                //Debug.Log("NO MAP OBJECT");
             }
         }
     }
@@ -56,7 +56,7 @@ public class MainMenuManagement : MonoBehaviour
     public void loadMainGame()
     {
         seed = FindObjectOfType<MapV2>().m_mapSeed;
-        Debug.Log(seed);
+        //Debug.Log(seed);
         SceneManager.LoadScene("MainGameSceneV2");
     }
 }
