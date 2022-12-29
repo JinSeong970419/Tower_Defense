@@ -1,16 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-
-
-
 public class MapV2 : MonoBehaviour
 {
-
     [SerializeField] bool m_autoStart = false;
-
 
     OddsTable m_tileOddsTable;
     OddsTable m_orientationOddsTable;
@@ -100,20 +94,16 @@ public class MapV2 : MonoBehaviour
 
     // Define odds
     [SerializeField]
-    float m_exitDirectionWeight = 0.0f; // says the priority of progressing toward the exit 
+    float m_exitDirectionWeight = 0.0f;
     [SerializeField]
-    float m_sameDirectionWeight = 5.0f; // will result in less direction changes -> simpler path
+    float m_sameDirectionWeight = 5.0f;
     [SerializeField]
-    float m_windyWeight = 5.0f; // says the likley hood of going horizontal
+    float m_windyWeight = 5.0f;
     [SerializeField]
-    float m_randomDirectionWeight = 3.0f; // filler weight to shift the odds towards randomness
-
-
+    float m_randomDirectionWeight = 3.0f;
 
     [SerializeField]
     Waypoints m_waypoints;
-
-
 
     List<PathSegment> m_pathSegments;
 
@@ -148,21 +138,18 @@ public class MapV2 : MonoBehaviour
             m_mapSeed = Random.Range(0, System.Int32.MaxValue);
 
 
-        // Randomize 90 deg increments
         m_orientationOddsTable = new OddsTable();
         m_orientationOddsTable.Add("0", 5, 0);
         m_orientationOddsTable.Add("90", 5, 90);
         m_orientationOddsTable.Add("180", 5, 180);
         m_orientationOddsTable.Add("270", 5, 270);
 
-        // Define the odds for the tile damage on the very bottom of the path damage
         m_tileOddsTable = new OddsTable();
         m_tileOddsTable.Add("Full", 5, m_pathTile1);
         m_tileOddsTable.Add("Damaged 75%", 5, m_pathTile2);
         m_tileOddsTable.Add("Damaged 50%", 2, m_pathTile3);
         m_tileOddsTable.Add("Damaged 25%", 2, m_pathTile4);
 
-        // Define the odds of the shrubbary
         m_treeOddsTable = new OddsTable();
         m_treeOddsTable.Add("CherryTree", 3, m_treeCherry);
         m_treeOddsTable.Add("Trees1", 4, m_trees1);
@@ -179,9 +166,6 @@ public class MapV2 : MonoBehaviour
         m_bushOddsTable.Add("Bush5", 4, m_bush5);
         m_bushOddsTable.Add("Crystals1", 1F, m_crystals1);
 
-
-
-        // Since perlin noise has an effect have a high chance of having fire and tent together
         m_objectOddsTable = new OddsTable();
         int n = 0;
         int times = 30;
@@ -200,11 +184,7 @@ public class MapV2 : MonoBehaviour
         }
         m_objectOddsTable.Add("Nothing" + (++n), 0.5F, null);
 
-
-
-
         m_shrubOddsTable = new OddsTable();
-        //m_shrubOddsTable.Add("BlankGrass1", 3, m_blankGrass1); // subtle difference in texture
         m_shrubOddsTable.Add("Grass1", 3, m_grass1);
         m_shrubOddsTable.Add("Grass2", 2, m_grass2);
         m_shrubOddsTable.Add("Grass3", 3, m_grass3);
@@ -220,7 +200,6 @@ public class MapV2 : MonoBehaviour
 
         if (m_useRandomMap)
         {
-            // Apply a random map template
             m_currentMapTemplate = GenerateMapTemplateFromSeed(m_mapSeed);
             m_mapSeed = m_currentMapTemplate.GetMapSeed();
         }
@@ -228,7 +207,6 @@ public class MapV2 : MonoBehaviour
         {
             m_currentMapTemplate = GenerateMapTemplateFromSeed(m_mapSeed);
 
-            // Load map template from file
             //m_currentMapTemplate = LoadMapTemplateFromFile("defaultMap.json");
         }
 
@@ -241,14 +219,6 @@ public class MapV2 : MonoBehaviour
 
     }
 
-
-
-    /*
-        This rows and cols thing might be confusing.
-        The Generator uses different axis than this map
-        The 0 row is actually the wall the enemies spawn (which is a column when looking at it from the standard prespective)
-        Could fix this but pretty much only effects map generation and I can live with it.
-    */
     public int GetMapRowCount()
     {
         return m_mapSizeY;
@@ -285,34 +255,22 @@ public class MapV2 : MonoBehaviour
         return m_pathSegments;
     }
 
-
-
-
-
     void SpawnNodeEnv(NodeV2 tile, GameObject envPrefab)
     {
         Vector3 envPos = tile.gameObject.transform.position + tile.GetEnvOffset();
         Quaternion envRot = Quaternion.identity;
 
-        // Random 90 deg rotation
         int envAngle = (int)(m_orientationOddsTable.GetPayload(m_orientationOddsTable.Roll()));
         envRot = Quaternion.AngleAxis(envAngle, Vector3.up);
 
         GameObject spawnedEnv = Instantiate(envPrefab, envPos, envRot, this.gameObject.transform);
 
-        // Set reference so it can be deleted
         tile.SetEnvObject(spawnedEnv);
     }
 
-
-    /**
-     * Apply Template To Map
-     * Method responsible for modifying the nodes to reflect the template.
-     */
     public void ApplyTemplateToMap(MapTemplate mapTemplate)
     {
         //Debug.Log("ApplyTemplateToMap");
-        // Initialize perlin noise generator to make terrain
         m_envPerlinNoise = new PerlinNoise2D(GetMapRowCount(), GetMapColCount());
 
 
@@ -347,12 +305,6 @@ public class MapV2 : MonoBehaviour
         Vector2Int cornerSW = new Vector2Int(southRow, westCol);
         Vector2Int cornerNW = new Vector2Int(northRow, westCol);
 
-        //==================================================
-
-        //              UPDATE CAMERA LIMITATION
-
-        //==================================================
-        // Super sketch but effective
         if (m_sketchCameraBounds)
         {
             float axisVal;
@@ -375,12 +327,6 @@ public class MapV2 : MonoBehaviour
             UpdateCameraLimitations(rangeX, rangeY, rangeZ);
         }
 
-        //==================================================
-
-        //                GENERATE BASE TILES
-
-        //==================================================
-        // Generate Tiles
         float mapWidth = m_tileSize * GetMapColCount();
         float mapHeight = m_tileSize * GetMapRowCount();
 
@@ -391,17 +337,11 @@ public class MapV2 : MonoBehaviour
 
             for (col = 0; col < GetMapColCount(); ++col)
             {
-                //----------------------------------------------
-
-                // Create Tile at position
-
                 float tileRowPosX = m_tileSize * col - mapWidth / 2;
                 float tileRowPosZ = m_tileSize * row - mapHeight / 2;
 
                 Vector3 tilePos = transform.position + new Vector3(tileRowPosX, 0, tileRowPosZ);
 
-
-                // Decide which prefab
                 nodeTemplate = mapTemplate.GetNode(row, col);
                 GameObject prefab = nodeTemplate.type == "path"
                                     || nodeTemplate.type == "start"
@@ -413,17 +353,10 @@ public class MapV2 : MonoBehaviour
                 NodeV2 spawnInstance = spawnNode.GetComponent<NodeV2>();
                 m_nodeList[row].Add(col, spawnInstance);
 
-
-
-                //----------------------------------------------
-
-                // Add vegitation to terrain
-
                 if (nodeTemplate.type == "terrain" && nodeTemplate.isEnvPlacable)
                 {
                     OddsTable subCategoryTable;
 
-                    // Choose which table to role on
                     if (nodeTemplate.isPlayablePerimeter)
                     {
                         subCategoryTable = m_shrubOddsTable;
@@ -440,11 +373,8 @@ public class MapV2 : MonoBehaviour
                         subCategoryTable = (OddsTable)m_environmentOddsTable.GetPayload(rolledKey);
                     }
 
-
-                    // Table exists
                     if (subCategoryTable != null)
                     {
-                        // Decide prefab at Random
                         string rolledKey;
 
                         if (Random.Range(0, 1) > 0.5)
@@ -456,19 +386,9 @@ public class MapV2 : MonoBehaviour
                             SpawnNodeEnv(spawnInstance, envPrefab);
                     }
                 }
-                //________________________________________________
             }
         }
 
-
-
-
-        //==================================================
-
-        //                APPLY TILE DATA
-
-        //==================================================
-        // Read directly from the map
         NodeTemplate template;
         for (row = 0; row < GetMapRowCount(); ++row)
             for (col = 0; col < GetMapColCount(); ++col)
@@ -484,14 +404,6 @@ public class MapV2 : MonoBehaviour
                     node.SetCoordinate(new Vector2Int(col, row));
                 }
             }
-
-
-
-        //==================================================
-
-        //                DECORATE PATHS
-
-        //==================================================
 
         m_pathSegments = mapTemplate.GetPathSegments();
         int globalPathTileCount = 0;
@@ -511,24 +423,15 @@ public class MapV2 : MonoBehaviour
             int directionX = deltaX == 0 ? 0 : deltaX / Mathf.Abs(deltaX);
             int directionY = deltaY == 0 ? 0 : deltaY / Mathf.Abs(deltaY);
 
-
-
-            //isLastTile, isFirstTile
-
-            // Set up 2D iteration 
             int dy = 0;
             int dx = 0;
             bool isLastIteration = false;
             bool isDone = false;
             while (!isDone)
             {
-                // Set loop ending flag
                 if (isLastIteration)
                     isDone = true;
-                //----------------------
-                // Execute for-loop contents with dx and dy
 
-                // Get tile location
                 row = segment.start.y + dy;
                 col = segment.start.x + dx;
 
@@ -537,14 +440,10 @@ public class MapV2 : MonoBehaviour
                 bool isLastTile = isLastSegment && isLastIteration;
                 bool isDirectionChange = s != previousSegmentIndex;
 
-
                 currentPos = new Vector2Int(col, row);
                 if (isFirstTile)
                     previousPos = currentPos;
 
-
-                //====================================================================
-                // If the segment is not overlapping form the last segment
                 if (previousPos != currentPos || isFirstTile)
                 {
                     NodeV2 currentTile = GetNode(row, col);
@@ -557,13 +456,6 @@ public class MapV2 : MonoBehaviour
                     Quaternion wallRotation;
                     nodeTemplate = mapTemplate.GetNode(row, col);
 
-
-
-                    // -------------------------------------------------------------------
-
-                    //                          ADD PATH WALLS
-
-                    // -------------------------------------------------------------------
                     if (currentTile.GetNodeType() != "end" && m_pathWall != null)
                     {
                         if (nodeTemplate.hasWall[(int)NodeTemplate.Wall.N])
@@ -592,15 +484,6 @@ public class MapV2 : MonoBehaviour
                         }
                     }
 
-
-
-
-
-                    // -------------------------------------------------------------------
-
-                    //                          ADD PATH PILLARS
-
-                    // -------------------------------------------------------------------
                     Quaternion pillarRotation = Quaternion.identity;
                     if (m_pathPiller != null)
                     {
@@ -645,7 +528,6 @@ public class MapV2 : MonoBehaviour
                     }
                     */
 
-
                     if (currentTile.GetNodeType() == "end" && m_finalScene != null)
                     {
                         currentTile.m_height = 11F;
@@ -654,26 +536,12 @@ public class MapV2 : MonoBehaviour
                         Instantiate(m_finalScene, endPos, endRot, this.gameObject.transform);
                     }
 
-
-
                     if (currentTile.GetNodeType() == "start" && m_startScene != null)
                     {
                         Vector3 startPos = currentTile.gameObject.transform.position + new Vector3(0, 0, -m_tileSize);//HERE
                         Quaternion startRot = Quaternion.AngleAxis(0, Vector3.up);
                         Instantiate(m_startScene, startPos, startRot, this.gameObject.transform);
                     }
-
-
-
-
-
-
-
-                    // -------------------------------------------------------------------
-
-                    //                          ADD Tiles
-
-                    // -------------------------------------------------------------------
 
                     Quaternion tileRotation = Quaternion.identity;
                     Vector3 tilePos;
@@ -701,12 +569,6 @@ public class MapV2 : MonoBehaviour
                         Instantiate(tilePrefrab, tilePos, tileRotation, parentTransform);
 
 
-
-                    // -------------------------------------------------------------------
-
-                    //                          ADD LAMPS
-
-                    // -------------------------------------------------------------------
                     if (currentTile.GetNodeType() != "end" && m_pathLamp != null)
                     {
                         float lampOffset = 3;
@@ -737,12 +599,8 @@ public class MapV2 : MonoBehaviour
                         }
                     }
 
-                } // End segment does not overlatp
-                //====================================================================
+                } 
 
-
-
-                // Increment tile could to tell first tile
                 ++globalPathTileCount;
                 //----------------------
                 // Increment loop
@@ -758,13 +616,6 @@ public class MapV2 : MonoBehaviour
             }
         }
 
-
-
-        //==================================================
-
-        //                ADD OUTTER WALLS
-
-        //==================================================
         if (m_outterWall != null)
         {
             // NORTH WALL
@@ -794,10 +645,6 @@ public class MapV2 : MonoBehaviour
                 }
             }
 
-
-
-
-
             // EAST WALL
             for (int i = 0; i < GetMapColCount(); ++i)
             {
@@ -824,14 +671,9 @@ public class MapV2 : MonoBehaviour
                 }
             }
         }
-        //==================================================
 
-        //                ADD OUTTER PILLARS 
-
-        //==================================================
         if (m_outterPillar != null)
         {
-            // NE PILLAR
             if (true)
             {
                 NodeV2 nodeInst = GetNode(cornerNE);
@@ -840,8 +682,6 @@ public class MapV2 : MonoBehaviour
                 Instantiate(m_outterPillar, nodePos + nodeInst.GetEnvOffset() + posOffset, Quaternion.identity, this.gameObject.transform);
             }
 
-
-            // NW PILLAR
             if (true)
             {
                 NodeV2 nodeInst = GetNode(cornerNW);
@@ -850,7 +690,6 @@ public class MapV2 : MonoBehaviour
                 Instantiate(m_outterPillar, nodePos + nodeInst.GetEnvOffset() + posOffset, Quaternion.identity, this.gameObject.transform);
             }
 
-            // SW PILLAR
             if (true)
             {
                 NodeV2 nodeInst = GetNode(cornerSW);
@@ -859,8 +698,6 @@ public class MapV2 : MonoBehaviour
                 Instantiate(m_outterPillar, nodePos + nodeInst.GetEnvOffset() + posOffset, Quaternion.identity, this.gameObject.transform);
             }
 
-
-            // SE PILLAR
             if (true)
             {
                 NodeV2 nodeInst = GetNode(cornerSE);
@@ -871,9 +708,6 @@ public class MapV2 : MonoBehaviour
         }
     }
 
-    /**
-     * Generates a random map template
-     */
     MapTemplate GenerateRandomMapTemplate()
     {
         MapGenerator mapGenerator = new MapGenerator(GetMapColCount(), GetMapRowCount());
@@ -892,10 +726,6 @@ public class MapV2 : MonoBehaviour
         return randomMap;
     }
 
-
-    /**
-     * Generates a random map template
-     */
     MapTemplate GenerateMapTemplateFromSeed(int seed)
     {
         MapGenerator mapGenerator = new MapGenerator(GetMapColCount(), GetMapRowCount());
@@ -941,12 +771,10 @@ public class MapV2 : MonoBehaviour
 
     public void GenerateMap()
     {
-
         m_useRandomMap = true;
         ResetMap();
         m_waypoints.ResetWaypoints();
         StartMap();
-
     }
 
     protected void UpdateCameraLimitations(Vector2 rangeX, Vector2 rangeY, Vector2 rangeZ)
@@ -975,7 +803,5 @@ public class MapV2 : MonoBehaviour
             }
         }
     }
-
-
 
 }

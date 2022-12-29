@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,20 +17,15 @@ public class GameController : MonoBehaviour
 
     public static void StartGame(int seed)
     {
-        //Reset wallet and health
         gameController.wallet.ResetWallet();
 
 
-        //FOR TESTING PURPOSED
         //gameController.wallet.AddMoney(10000);
-
 
         gameController.health.ResetHealth();
 
-        //Remove all enemies, enemy spanwers, and reset wavecontroller
         gameController.waveController.ResetAll();
 
-        //Remove all towers
         TowerController[] towers = FindObjectsOfType<TowerController>();
         for (int i = 0; i < towers.Length; i++)
         {
@@ -44,11 +39,8 @@ public class GameController : MonoBehaviour
     // called 
     public static void EndGame(bool showScreen = true)
     {
-        //Don't Reset wallet and health 
-        //Remove all enemies, enemy spanwers, and reset wavecontroller
         gameController.waveController.ResetAll();
 
-        //Remove all towers
         TowerController[] towers = FindObjectsOfType<TowerController>();
         for (int i = 0; i < towers.Length; i++)
         {
@@ -62,7 +54,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    // called by enemy when they reach the end;
     public static void EndReached(int dmg)
     {
         bool gameover = gameController.health.SubtractHealth(dmg);
@@ -89,14 +80,11 @@ public class GameController : MonoBehaviour
         gameController.wallet.WaveCompletionReward(reward);
     }
 
-    //Add money to wallet for selling towers
     public static void SellTowerGetMoney(int amount)
     {
         gameController.wallet.AddMoney(amount);
     }
 
-
-    // Start is called before the first frame update
     void Start()
     {
         if (nb_controllers > 0 && gameController != null)
@@ -108,7 +96,6 @@ public class GameController : MonoBehaviour
         gameController = GetComponent<GameController>();
         nb_controllers += 1;
 
-        // if no objects attached, find the objects
         if (wallet == null)
             wallet = FindObjectOfType<Wallet>();
         if (health == null)
@@ -116,7 +103,7 @@ public class GameController : MonoBehaviour
         if (map == null)
             map = FindObjectOfType<MapV2>();
 
-        //GET SEED FROM MENU MANAGER
+        //GET SEED
         MainMenuManagement mmm = FindObjectOfType<MainMenuManagement>();
         if (mmm != null)
         {
@@ -126,12 +113,6 @@ public class GameController : MonoBehaviour
         {
             StartGame(15243);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void RestartApplication()

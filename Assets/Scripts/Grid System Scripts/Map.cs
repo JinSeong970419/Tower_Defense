@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -11,17 +10,17 @@ public class Map : MonoBehaviour
     [SerializeField] public int m_mapSeed = 652697955;
     [SerializeField] public bool m_useRandomMap;
 
-    // È®·ü °ü·Ã
-    [SerializeField] float m_exitDirectionWeight = 0.0f; // Ãâ±¸ ¿ì¼± ¼øÀ§
-    [SerializeField] float m_sameDirectionWeight = 5.0f; // ¹æÇâ º¯°æ °ü·Ã -> ÀûÀ» ¼ö·Ï °æ·Î°¡ ´Ü¼øÇØÁü
-    [SerializeField] float m_windyWeight = 5.0f; // ¼öÆò ¿©ºÎ
-    [SerializeField] float m_randomDirectionWeight = 3.0f; // ¹«ÀÛÀ§ È®·ü ÇÊ·¯(°¡ÁßÄ¡)
+    // í™•ë¥  ê´€ë ¨
+    [SerializeField] float m_exitDirectionWeight = 0.0f; // ì¶œêµ¬ ìš°ì„  ìˆœìœ„
+    [SerializeField] float m_sameDirectionWeight = 5.0f; // ë°©í–¥ ë³€ê²½ ê´€ë ¨ -> ì ì„ ìˆ˜ë¡ ê²½ë¡œê°€ ë‹¨ìˆœí•´ì§
+    [SerializeField] float m_windyWeight = 5.0f; // ìˆ˜í‰ ì—¬ë¶€
+    [SerializeField] float m_randomDirectionWeight = 3.0f; // ë¬´ì‘ìœ„ í™•ë¥  í•„ëŸ¬(ê°€ì¤‘ì¹˜)
 
-    // Default ¸Ê Å©±â
+    // Default ë§µ í¬ê¸°
     const int m_mapSizeX = 16;
     const int m_mapSizeY = 16;
 
-    // ³ëµå Reference
+    // ë…¸ë“œ Reference
     Node[,] m_nodeMap;
     List<PathSegment> m_pathSegments;
 
@@ -30,12 +29,12 @@ public class Map : MonoBehaviour
 
     void Start()
     {
-        // °¢ ³ëµå À§Ä¡ ¸Ê_ ÃÊ±âÈ­
+        // ê° ë…¸ë“œ ìœ„ì¹˜ ë§µ_ ì´ˆê¸°í™”
         InitNodes();
 
         if (m_useRandomMap)
         {
-            // ¹«ÀÛÀ§ ÅÛÇÃ¸´ Àû¿ë
+            // ë¬´ì‘ìœ„ í…œí”Œë¦¿ ì ìš©
             m_currentMapTemplate = GenerateRandomMapTemplate();
             m_mapSeed = m_currentMapTemplate.GetMapSeed();
         }
@@ -43,7 +42,7 @@ public class Map : MonoBehaviour
         {
             m_currentMapTemplate = GenerateMapTemplateFromSeed(m_mapSeed);
 
-            // ÆÄÀÏ¿¡¼­ Áöµµ ÅÛÇÃ¸´ ·ÎµåÇÒ °æ¿ì_ ¹Ì¿Ï¼º
+            // íŒŒì¼ì—ì„œ ì§€ë„ í…œí”Œë¦¿ ë¡œë“œí•  ê²½ìš°_ ë¯¸ì™„ì„±
             // m_currentMapTemplate = LoadMapTemplateFromFile("defaultMap.json");
         }
         ApplyTemplateToMap(m_currentMapTemplate);
@@ -61,8 +60,8 @@ public class Map : MonoBehaviour
     public Node GetNode(int row, int col) { return m_nodeMap[row, col]; }
 
     /**
-     * ÃÊ±âÈ­
-     * È­¸é¿¡ ³ëµå¸¦ ºÒ·¯¿À±â
+     * ì´ˆê¸°í™”
+     * í™”ë©´ì— ë…¸ë“œë¥¼ ë¶ˆëŸ¬ì˜¤ê¸°
      */
     void InitNodes()
     {
@@ -70,7 +69,7 @@ public class Map : MonoBehaviour
 
         // Debug.Log("Node count: " + nodes.Length);
 
-        // ³ëµå ¸Ê »ı¼º
+        // ë…¸ë“œ ë§µ ìƒì„±
         m_nodeMap = new Node[m_mapSizeX, m_mapSizeY];
         for (int i = 0; i < nodes.Length; ++i)
         {
@@ -81,8 +80,8 @@ public class Map : MonoBehaviour
     }
 
     /**
-     * Áöµµ¿¡ ÅÛÇÃ¸´ Àû¿ë
-     * ÅÛÇÃ¸´À» ¹İ¿µÇÏµµ·Ï ³ëµå¸¦ ¼öÁ¤
+     * ì§€ë„ì— í…œí”Œë¦¿ ì ìš©
+     * í…œí”Œë¦¿ì„ ë°˜ì˜í•˜ë„ë¡ ë…¸ë“œë¥¼ ìˆ˜ì •
      */
     public void ApplyTemplateToMap(MapTemplate mapTemplate)
     {
@@ -93,7 +92,7 @@ public class Map : MonoBehaviour
         Color terrainColor = new Color(22.0f / 255.0f, 117.0f / 255.0f, 22.0f / 255.0f, 1.0f); // green;
         Color chosenColor = terrainColor;
 
-        // ¼¼±×¸ÕÆ® °æ·Î ·Îµå
+        // ì„¸ê·¸ë¨¼íŠ¸ ê²½ë¡œ ë¡œë“œ
         m_pathSegments = mapTemplate.GetPathSegments();
 
         int row;
@@ -105,7 +104,7 @@ public class Map : MonoBehaviour
                     m_nodeMap[row, col].SetOriginalColor(terrainColor);
 
         /*
-        // ·£´õ¸µ ÀÛ¾÷_ ¹Ì±¸Çö
+        // ëœë”ë§ ì‘ì—…_ ë¯¸êµ¬í˜„
         
         int globalPathTileCount = 0;
         int segmentLargestIndex = m_pathSegments.Count - 1;
@@ -157,7 +156,7 @@ public class Map : MonoBehaviour
         */
 
         //*
-        // Áöµµ Á÷Á¢ ÀĞ¾î¿À±â
+        // ì§€ë„ ì§ì ‘ ì½ì–´ì˜¤ê¸°
         NodeTemplate template;
 
         for (row = 0; row < m_mapSizeY; ++row)
@@ -188,16 +187,16 @@ public class Map : MonoBehaviour
     }
 
     /**
-     * ÀÓÀÇÀÇ Áöµµ »ı¼º
+     * ì„ì˜ì˜ ì§€ë„ ìƒì„±
      */
     MapTemplate GenerateRandomMapTemplate()
     {
         MapGenerator mapGenerator = new MapGenerator(m_mapSizeX, m_mapSizeY);
 
-        // ¸Ê Seed ¼³Á¤
+        // ë§µ Seed ì„¤ì •
         mapGenerator.SetSeed(Random.Range(0, System.Int32.MaxValue));
 
-        // Áöµµ »ı¼º°ª ¼³Á¤
+        // ì§€ë„ ìƒì„±ê°’ ì„¤ì •
         mapGenerator.SetExitDirectionWeight(m_exitDirectionWeight);
         mapGenerator.SetSameDirectionWeight(m_sameDirectionWeight);
         mapGenerator.SetWindyWeight(m_windyWeight);
@@ -225,7 +224,7 @@ public class Map : MonoBehaviour
 
 
     /**
-     * »õ·Î¿î Áöµµ »ı¼º
+     * ìƒˆë¡œìš´ ì§€ë„ ìƒì„±
      */
     public void GenerateMap()
     {
@@ -250,7 +249,7 @@ public class Map : MonoBehaviour
             }
             catch (System.FormatException)
             {
-                System.Console.WriteLine($"Àç È®ÀÎ '{userInput}'");
+                System.Console.WriteLine($"ì¬ í™•ì¸ '{userInput}'");
             }
         }
 

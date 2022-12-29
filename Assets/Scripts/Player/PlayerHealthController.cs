@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -26,7 +26,7 @@ public class PlayerHealthController : MonoBehaviour
     // 게임 종료 시 true 반환
     public bool SubtractHealth(int subtr_amt)
     {
-        if (current_health <= subtr_amt)
+        if (current_health < subtr_amt)
         {
             guiHealthText.text = current_health.ToString();
             current_health = 0;

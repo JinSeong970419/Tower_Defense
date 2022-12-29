@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,14 +16,6 @@ public class NodeV2 : MonoBehaviour
     GameObject towerObject = null;
     GameObject envObject = null;
 
-
-
-
-    // ==================================================
-
-    //                  NODE COORDINATE
-
-    // ==================================================
     public void SetCoordinate(Vector2Int coord)
     {
         row = coord.y;
@@ -36,12 +28,6 @@ public class NodeV2 : MonoBehaviour
     }
 
 
-    // ==================================================
-
-    //                  TOWER PLACEMENT
-
-    // ==================================================
-    // Is Tower Placable
     public void SetIsTowerPlacable(bool isTowerPlacable)
     {
         this.isTowerPlacable = isTowerPlacable;
@@ -52,18 +38,6 @@ public class NodeV2 : MonoBehaviour
         return isTowerPlacable;
     }
 
-
-
-
-
-
-
-    // ==================================================
-
-    //                  TOWER REFERENCE
-
-    // ==================================================
-    // Tower Reference
     public void SetTowerObject(GameObject tower)
     {
         towerObject = tower;
@@ -92,14 +66,6 @@ public class NodeV2 : MonoBehaviour
         }
     }
 
-
-
-    // ==================================================
-
-    //                  TOWER REFERENCE
-
-    // ==================================================
-    // Tower Reference
     public void SetEnvObject(GameObject env)
     {
         envObject = env;
@@ -128,16 +94,6 @@ public class NodeV2 : MonoBehaviour
         return isEnvPlacable;
     }
 
-    
-
-
-
-    // ==================================================
-
-    //              IS PLAYABLE PARIMITER
-
-    // ==================================================
-    // Used to make th environment smaller around the wall so it does not intersect
     public void SetIsPlayablePerimeter(bool val)
     {
         isPlayablePerimeter = val;
@@ -147,12 +103,6 @@ public class NodeV2 : MonoBehaviour
         return isPlayablePerimeter;
     }
 
-
-    // ==================================================
-
-    //                    NODE TYPE
-
-    // ==================================================
     public void SetNodeType(string type)
     {
         m_type = type;
@@ -163,12 +113,6 @@ public class NodeV2 : MonoBehaviour
         return m_type;
     }
 
-
-    // ==================================================
-
-    //                     MISC
-
-    // ==================================================
     public bool GetIsPath()
     {
         return m_type == "start" || m_type == "path" || m_type == "end";
@@ -180,16 +124,6 @@ public class NodeV2 : MonoBehaviour
         return new Vector3(0, m_height, 0);
     }
 
-
-
-
-
-
-    // ==================================================
-
-    //                  HIGHLIGHTING
-
-    // ==================================================
     public void SetIsHighlighted()
     {
 
@@ -201,6 +135,5 @@ public class NodeV2 : MonoBehaviour
     {
         
     }
-
 
 }
