@@ -11422,11 +11422,11 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void MapV2__ctor_m8A382A65E1B0FE85353CF7917E4
 		__this->___m_mapSizeY_50 = ((int32_t)16);
 		// public bool m_useRandomMap = true;
 		__this->___m_useRandomMap_54 = (bool)1;
-		// float m_sameDirectionWeight = 5.0f; // will result in less direction changes -> simpler path
+		// float m_sameDirectionWeight = 5.0f;
 		__this->___m_sameDirectionWeight_56 = (5.0f);
-		// float m_windyWeight = 5.0f; // says the likley hood of going horizontal
+		// float m_windyWeight = 5.0f;
 		__this->___m_windyWeight_57 = (5.0f);
-		// float m_randomDirectionWeight = 3.0f; // filler weight to shift the odds towards randomness
+		// float m_randomDirectionWeight = 3.0f;
 		__this->___m_randomDirectionWeight_58 = (3.0f);
 		// private List<GameObject> squadlist = new List<GameObject>();
 		List_1_tB951CE80B58D1BF9650862451D8DAD8C231F207B* L_1 = (List_1_tB951CE80B58D1BF9650862451D8DAD8C231F207B*)il2cpp_codegen_object_new(List_1_tB951CE80B58D1BF9650862451D8DAD8C231F207B_il2cpp_TypeInfo_var);
@@ -16437,14 +16437,6 @@ IL_009e:
 		return;
 	}
 }
-// System.Void GameController::Update()
-IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void GameController_Update_m5E36D1D6999A7510DFDFBF6805CF9E9CB50F0962 (GameController_tDA619EE453F7ED2C8297EF928518A0B447E44D09* __this, const RuntimeMethod* method) 
-{
-	{
-		// }
-		return;
-	}
-}
 // System.Void GameController::RestartApplication()
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void GameController_RestartApplication_m8513FE0FFD1D3BD87429AAA3C3FBDE13B9B090FE (GameController_tDA619EE453F7ED2C8297EF928518A0B447E44D09* __this, const RuntimeMethod* method) 
 {
@@ -17219,7 +17211,7 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Map_GenerateMapFromSeed_m6DA7D7F44A5FFD4
 CATCH_0052:
 	{// begin catch(System.FormatException)
 		// catch (System.FormatException)
-		// System.Console.WriteLine($"?? ??? '{userInput}'");
+		// System.Console.WriteLine($"? ?? '{userInput}'");
 		String_t* L_10 = V_1;
 		String_t* L_11;
 		L_11 = String_Concat_m9B13B47FCB3DF61144D9647DDA05F527377251B0(((String_t*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&_stringLiteralBCBC2348DA3CE776F4C141664E9FDE6B754745F5)), L_10, ((String_t*)il2cpp_codegen_initialize_runtime_metadata_inline((uintptr_t*)&_stringLiteral42646B33B50B6AA15E22733C8900716F0FE19E1D)), NULL);
@@ -17242,11 +17234,11 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void Map__ctor_m6B2A06CD5C7838A7C5F531A2CD6EC
 	{
 		// [SerializeField] public int m_mapSeed = 652697955;
 		__this->___m_mapSeed_6 = ((int32_t)652697955);
-		// [SerializeField] float m_sameDirectionWeight = 5.0f; // ???? ???? ???? -> ???? ???? ???? ???????
+		// [SerializeField] float m_sameDirectionWeight = 5.0f; // ?? ?? ?? -> ?? ?? ??? ????
 		__this->___m_sameDirectionWeight_9 = (5.0f);
-		// [SerializeField] float m_windyWeight = 5.0f; // ???? ????
+		// [SerializeField] float m_windyWeight = 5.0f; // ?? ??
 		__this->___m_windyWeight_10 = (5.0f);
-		// [SerializeField] float m_randomDirectionWeight = 3.0f; // ?????? ??? ???(?????)
+		// [SerializeField] float m_randomDirectionWeight = 3.0f; // ??? ?? ??(???)
 		__this->___m_randomDirectionWeight_11 = (3.0f);
 		MonoBehaviour__ctor_m592DB0105CA0BC97AA1C5F4AD27B12D68A3B7C1E(__this, NULL);
 		return;
@@ -22349,10 +22341,10 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void PlayerHealthController_AddHealth_mF354CC
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR bool PlayerHealthController_SubtractHealth_mE665FEAD5D3B028A3C18303AEB7EEEF8142AAD1D (PlayerHealthController_tCADE19FDA46D6C6CD5C013D08071F86F11565C4F* __this, int32_t ___subtr_amt0, const RuntimeMethod* method) 
 {
 	{
-		// if (current_health <= subtr_amt)
+		// if (current_health < subtr_amt)
 		int32_t L_0 = __this->___current_health_5;
 		int32_t L_1 = ___subtr_amt0;
-		if ((((int32_t)L_0) > ((int32_t)L_1)))
+		if ((((int32_t)L_0) >= ((int32_t)L_1)))
 		{
 			goto IL_0028;
 		}
