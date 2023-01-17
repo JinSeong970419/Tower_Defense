@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -141,7 +141,7 @@ public class EnemySpawnerController : MonoBehaviour
     {
         EnemyController enemyController = obj.GetComponent<EnemyController>();
         if (enemyController != null)
-            enemyController.Kill(); // Make Go Boom!
+            enemyController.Kill(); // 이펙트
         else
             Destroy(obj);
     }

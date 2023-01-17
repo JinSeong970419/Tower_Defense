@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,10 +18,10 @@ public class CameraController : MonoBehaviour
     private float rotationZ;
 
     // 카메라 고정 회전
-    private float minAngleX = -70F;
-    private float maxAngleX = 90F;
-    private float minAngleY = -360.0F;
-    private float maxAngleY = 360.0F;
+    private float minAngleX = -70f;
+    private float maxAngleX = 90f;
+    private float minAngleY = -360.0f;
+    private float maxAngleY = 360.0f;
 
     public Rigidbody rb;
     bool middleMousePressed = false;
